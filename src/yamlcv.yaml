@@ -1,0 +1,18 @@
+# structure is based on yaml-cv
+# https://github.com/haath/yaml-cv
+
+details:
+  first_name: Name
+  last_name: Lastname
+  title: DevOps engineer
+
+profile: |
+  Focused, energetic and motivated to learn DevOps.
+
+contact:
+- text: my@domain.net
+  url: "mailto:my@domain.net"
+  icon: email
+
+# automatically populated with data from skills.yaml
+technical: []

@@ -1,0 +1,41 @@
+version: '3'
+
+dotenv: ['.env']
+
+tasks:
+  build:
+    cmds:
+      - scripts/build.sh
+
+  json:
+      deps:
+        - build
+      cmds:
+       - yq '. | to_json' ${BUILD_PATH}/${CV}.yaml > ${BUILD_PATH}/${CV}.json
+
+  skill_by_level:
+    yq '.skills[] | select(.level == "{{.CLI_ARGS}}") | .name' ${SRC_PATH}/skills.yaml
+  
+  docker-release:
+    cmds:
+      - docker build --tag cv-release:$(date +%Y%m%d%H%M%S) --target final .
+
+  docker-builder:
+    cmds:
+      - docker build -t cv-builder:$(date +%Y%m%d%H%M%S) --target builder .
+
+  docker-build:
+    cmds:
+      - task: docker-builder
+      - task: docker-release
+  
+  compose-run:
+    cmds:
+      - docker compose up -d
+  
+  compose-stop:
+    cmds:
+      - docker compose down -v --remove-orphans
+
+  test-ha-server:
+    while true; do curl -v http://localhost:8080 & sleep 1; done;

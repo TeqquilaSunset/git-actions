@@ -1,0 +1,29 @@
+services:
+  cv:
+    build:
+      target: final
+    volumes:
+     - data:/opt/app/build
+
+  nginx:
+    depends_on:
+      - cv
+    image: nginx:1.23.2-alpine
+    restart: always
+    deploy:
+      replicas: 3
+    volumes:
+      - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
+      - data:/usr/share/nginx/html
+
+  nginx-balancer:
+    depends_on:
+      - nginx
+    image: nginx:1.23.2-alpine
+    volumes:
+      - ./configs/multiple-nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8080:80
+
+volumes:
+  data:

@@ -1,0 +1,65 @@
+networks:
+  jenkins:
+
+volumes:
+  jenkins-data:
+  jenkins-jnlp-agent-data:
+
+services:
+  jenkins-server:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    networks:
+      - jenkins
+    ports:
+      - 8080:8080
+    container_name: jenkins
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-data:/home
+      - ./jenkins.yaml:/var/jenkins_home/jenkins_caac.yaml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker:/var/lib/docker
+  
+  jnlp-agent:
+    image: jenkins/inbound-agent
+    privileged: true
+    user: root
+    networks:
+      - jenkins
+    init: true
+    environment:
+      - JENKINS_SECRET=${JENKINS_AGENT_SECRET}
+      - JENKINS_URL=${JENKINS_MASTER_URL}
+      - JENKINS_AGENT_NAME=${JENKINS_AGENT_NAME}
+      - DIND=true
+      - TINI_SUBREAPER=true
+    volumes:
+      - jenkins-jnlp-agent-data:/var/jenkins_home/worker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker:/var/lib/docker
+  
+  backup:
+    image: alpine:3.14
+    profiles:
+      - backup
+    entrypoint: /bin/sh
+    command:
+      - -xc
+      - tar -czvf /backups/backup.tgz -C /var/jenkins_home .
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - ./backups:/backups
+
+  restore:
+    image: alpine:3.14
+    entrypoint: /bin/sh
+    profiles:
+      - restore
+    command:
+      - -xc
+      - tar -C /var/jenkins_home -xzvf /backups/backup.tgz
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - ./backups:/backups
