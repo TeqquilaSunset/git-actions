@@ -24,6 +24,8 @@ jobs:
           tags: cv-final
           target: final
       
-      - run: docker images
+      - name: test final
+        run: docker run cv-final
+
 
 
