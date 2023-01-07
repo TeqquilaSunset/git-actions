@@ -23,5 +23,7 @@ jobs:
           file: ./Dockerfile
           tags: cv-final
           target: final
+      
+      - run: docker images
 
 
