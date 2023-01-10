@@ -29,6 +29,9 @@ jobs:
           tags: cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: final
       
+      - name: check images 
+        run: docker images
+
       - name: test final
         run: docker run cv-final
 
