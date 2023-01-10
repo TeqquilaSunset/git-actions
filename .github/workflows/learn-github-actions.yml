@@ -30,7 +30,7 @@ jobs:
         run: docker images
 
       - name: test final
-        run: docker run cv-final
+        run: docker run cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
 
 
 
