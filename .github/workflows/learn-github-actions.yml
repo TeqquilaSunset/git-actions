@@ -2,6 +2,10 @@ name: learn-github-actions
 on: 
   push:
   workflow_dispatch:
+    tag:
+      default: latest
+      description: image tag
+
 jobs:
  build:
     runs-on: ubuntu-latest
