@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
 jobs:
  build:
-    env:
-      BUILDER: cv-builder
-      RELEASE: cv-release
     runs-on: ubuntu-latest
     steps:
       - name: Check out Project
