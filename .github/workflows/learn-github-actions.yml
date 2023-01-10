@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
 jobs:
  build:
+    env:
+      BUILDER: cv-builder
+      RELEASE: cv-release
     runs-on: ubuntu-latest
     steps:
       - name: Check out Project
@@ -15,7 +18,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          tags: cv-builder
+          tags: cv-builder:${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: builder
 
       - name: build final
@@ -23,7 +26,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          tags: cv-final
+          tags: cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: final
       
       - name: test final
