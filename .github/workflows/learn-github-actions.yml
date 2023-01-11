@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        name_image: [cv-builder, cv-final]
-        target: [builder, final]
         include:
           - name_image: cv-duilder
             target: builder
