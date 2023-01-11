@@ -14,6 +14,13 @@ jobs:
       matrix:
         name_image: [cv-builder, cv-final]
         target: [builder, final]
+        include:
+          - name_image: cv-duilder
+            target: builder
+          - name_image: cv-final
+            target: final
+
+          
 
     steps:
       - name: Check out Project
@@ -27,12 +34,3 @@ jobs:
           push: false
           tags: ${{matrix.name_image}}:${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: ${{matrix.target}}
-      
-      - name: check images 
-        run: docker images
-
-      - name: test final
-        run: docker run cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
-
-
-
