@@ -18,12 +18,7 @@ jobs:
           - name_image: cv-final
             target: final
 
-          
-
     steps:
-      - name: Check out Project
-        uses: actions/checkout@v3
-
       - name: build builder and release
         uses: docker/build-push-action@v3
         with:
