@@ -12,8 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        name-cv: [cv-builder, cv-final]
+        name_image: [cv-builder, cv-final]
         target: [builder, final]
+        
     steps:
       - name: Check out Project
         uses: actions/checkout@v3
