@@ -28,5 +28,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
+          image: ${{matrix.name_image}}
           tags: ${{matrix.name_image}}:${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: ${{matrix.target}}
