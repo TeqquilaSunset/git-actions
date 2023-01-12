@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: CI
 on: 
   push:
   workflow_dispatch:
@@ -35,5 +35,4 @@ jobs:
 
       - name: test final
         run: docker run cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
-
 
