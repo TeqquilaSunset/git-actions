@@ -1,0 +1,38 @@
+name: CI
+on: 
+  push:
+  workflow_dispatch:
+    tag:
+      default: latest
+      description: image tag
+
+jobs:
+ build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Project
+        uses: actions/checkout@v3
+
+      - name: build builder
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: cv-builder:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          target: builder
+
+      - name: build final
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          target: final
+      
+      - name: check images 
+        run: docker images
+
+      - name: test final
+        run: docker run cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+
