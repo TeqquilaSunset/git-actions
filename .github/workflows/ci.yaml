@@ -1,5 +1,5 @@
 name: CI
-on: 
+on:
   push:
   workflow_dispatch:
     inputs:
@@ -8,7 +8,7 @@ on:
         description: image tag
 
 jobs:
- build:
+  build:
     runs-on: ubuntu-latest
     env:
       TAG: "${{ inputs.tag != '' && inputs.tag || github.ref_name }}"
@@ -43,8 +43,8 @@ jobs:
           target: final
           file: ./Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cv-final:${{ env.TAG }}
-      
-      - name: check images 
+
+      - name: check images
         run: docker images
 
       - name: test final
