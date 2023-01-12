@@ -17,7 +17,7 @@ jobs:
       - name: Check out Project
         uses: actions/checkout@v3
 
-      - name: build builder and release
+      - name: Build all
         uses: ./.github/actions/
         with:
           context: .
