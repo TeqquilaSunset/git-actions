@@ -40,7 +40,7 @@ jobs:
           push: true
           target: final
           file: ./Dockerfile
-          tags: cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
       
       - name: check images 
         run: docker images
