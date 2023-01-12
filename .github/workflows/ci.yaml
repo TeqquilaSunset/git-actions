@@ -38,9 +38,9 @@ jobs:
         with:
           context: .
           push: true
+          target: final
           file: ./Dockerfile
           tags: cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
-          target: final
       
       - name: check images 
         run: docker images
