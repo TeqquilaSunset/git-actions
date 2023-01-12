@@ -4,6 +4,10 @@ inputs:
   image:
     description: "image:tag"
     required: true
+  file:
+    description: "Dockerfile"
+    required: true
+    default: "Dockerfile"
   target:
     description: "target:tag"
     required: true
