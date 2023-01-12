@@ -4,7 +4,7 @@ inputs:
   image:
     description: "image:tag"
     required: true
-  file:
+  dockerfile:
     description: "Dockerfile"
     required: true
     default: "Dockerfile"
@@ -20,5 +20,5 @@ runs:
   using: "composite"
   steps:
     - run: |
-        docker build -t ${{ inputs.image }} --target ${{ inputs.target }} ${{ inputs.context }}
+        docker build -t ${{ inputs.image }} -f ${{ inputs.dockerfile }} --target ${{ inputs.target }} ${{ inputs.context }}
       shell: bash
