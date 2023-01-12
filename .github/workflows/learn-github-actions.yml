@@ -2,31 +2,38 @@ name: learn-github-actions
 on: 
   push:
   workflow_dispatch:
-    inputs:
-      tag:
-        default: latest
-        description: image tag
+    tag:
+      default: latest
+      description: image tag
 
 jobs:
  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - name_image: cv-duilder
-            target: builder
-          - name_image: cv-final
-            target: final
-
     steps:
       - name: Check out Project
         uses: actions/checkout@v3
 
-      - name: build builder and release
+      - name: build builder
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           push: false
-          tags: ${{matrix.name_image}}:${{inputs.tag != '' && inputs.tag || github.ref_name}}
-          target: ${{matrix.target}}
+          tags: cv-builder:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          target: builder
+
+      - name: build final
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          target: final
+      
+      - name: check images 
+        run: docker images
+
+      - name: test final
+        run: docker run cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+
+
