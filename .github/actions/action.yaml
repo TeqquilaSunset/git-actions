@@ -1,0 +1,24 @@
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  image:
+    description: "image:tag"
+    required: true
+  dockerfile:
+    description: "Dockerfile"
+    required: true
+    default: "Dockerfile"
+  target:
+    description: "target:tag"
+    required: true
+  context:
+    description: "context"
+    required: true
+    default: "."
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        docker build -t ${{ inputs.image }} -f ${{ inputs.dockerfile }} --target ${{ inputs.target }} ${{ inputs.context }}
+      shell: bash
