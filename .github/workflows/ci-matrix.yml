@@ -22,5 +22,5 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          image: ${{matrix.name_image}}:${{inputs.tag != '' && inputs.tag || github.ref_name}}
-          target: ${{matrix.target}}
+          image: ${{ matrix.name_image }}:${{ github.ref_name }}
+          target: ${{ matrix.target }}
