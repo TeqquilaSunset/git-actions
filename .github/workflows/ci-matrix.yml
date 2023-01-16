@@ -1,11 +1,6 @@
 name: CI with matrix
 on: 
   push:
-  workflow_dispatch:
-    inputs:
-      tag:
-        default: latest
-        description: image tag
 
 jobs:
  build:
@@ -13,7 +8,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - name_image: cv-duilder
+          - name_image: cv-builder
             target: builder
           - name_image: cv-final
             target: final
@@ -22,11 +17,10 @@ jobs:
       - name: Check out Project
         uses: actions/checkout@v3
 
-      - name: build builder and release
-        uses: ./.github/actions/action.yaml
+      - name: Build all
+        uses: ./.github/actions/
         with:
           context: .
           file: ./Dockerfile
-          push: false
-          tags: ${{matrix.name_image}}:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          image: ${{matrix.name_image}}:${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: ${{matrix.target}}

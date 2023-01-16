@@ -1,17 +1,26 @@
-name: CIfgrgrgrgrgrgrFFFFFFFFFFFFFFFFFFFFFFFiiF
+name: CI
 on: 
   push:
   workflow_dispatch:
-    tag:
-      default: latest
-      description: image tag
+    inputs:
+      tag:
+        default: latest
+        description: image tag
 
 jobs:
  build:
     runs-on: ubuntu-latest
+    env:
+      TAG: "${{ inputs.tag != '' && inputs.tag || github.ref_name }}"
     steps:
       - name: Check out Project
         uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: build builder
         uses: docker/build-push-action@v3
@@ -19,20 +28,25 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          tags: cv-builder:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          tags: cv-builder:${{ env.TAG }}
           target: builder
 
-      - name: build final
+      - name: Set up Dokcer Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: build and push final
+        id: docker_build
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile
-          tags: cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          push: true
           target: final
+          file: ./Dockerfile
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/cv-final
+          tags: ${{ env.TAG }}
       
       - name: check images 
         run: docker images
 
       - name: test final
-        run: docker run cv-final:${{inputs.tag != '' && inputs.tag || github.ref_name}}
-
+        run: docker run ${{ secrets.DOCKERHUB_USERNAME }}/cv-final:${{ env.TAG }}

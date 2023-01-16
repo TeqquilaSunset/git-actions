@@ -1,1 +1,8 @@
+*.html
+*.json
+*.pdf
+build
+build/*
+.idea
 jenkins/backups
+jenkins/.env
