@@ -22,5 +22,5 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          image: ${{ matrix.name_image }}:${{ github.ref_name }}
+          image: ${{ matrix.name_image }}:latest
           target: ${{ matrix.target }}
