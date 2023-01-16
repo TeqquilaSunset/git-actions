@@ -1,0 +1,32 @@
+name: CI with matrix
+on: 
+  push:
+  workflow_dispatch:
+    inputs:
+      tag:
+        default: latest
+        description: image tag
+
+jobs:
+ build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name_image: cv-builder
+            target: builder
+          - name_image: cv-final
+            target: final
+
+    steps:
+      - name: Check out Project
+        uses: actions/checkout@v3
+
+      - name: Build all
+        uses: ./.github/actions/
+        with:
+          context: .
+          file: ./Dockerfile
+          image: ${{matrix.name_image}}
+          tags: ${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          target: ${{matrix.target}}
