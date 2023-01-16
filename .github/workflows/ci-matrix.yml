@@ -1,6 +1,11 @@
 name: CI with matrix
 on:
   push:
+  workflow_dispatch:
+    inputs:
+      tag:
+        default: latest
+        description: image tag
 
 jobs:
   build:
