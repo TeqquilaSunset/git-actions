@@ -1,14 +1,9 @@
 name: CI with matrix
-on: 
+on:
   push:
-  workflow_dispatch:
-    inputs:
-      tag:
-        default: latest
-        description: image tag
 
 jobs:
- build:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
