@@ -42,7 +42,7 @@ jobs:
           push: true
           target: final
           file: ./Dockerfile
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/cv-final:${{ env.TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cv-final:${{ env.TAG }}
       
       - name: check images 
         run: docker images

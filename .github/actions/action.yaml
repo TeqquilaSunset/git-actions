@@ -4,6 +4,9 @@ inputs:
   image:
     description: "image"
     required: true
+  tags:
+    description: "tags"
+    required: true
   file:
     description: "Dockerfile"
     required: true
