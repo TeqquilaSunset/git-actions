@@ -1,6 +1,11 @@
 name: CI with matrix
 on: 
   push:
+  workflow_dispatch:
+    inputs:
+      tag:
+        default: latest
+        description: image tag
 
 jobs:
  build:
@@ -22,5 +27,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          image: ${{matrix.name_image}}:${{inputs.tag != '' && inputs.tag || github.ref_name}}
+          image: ${{matrix.name_image}}
+          tags: ${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: ${{matrix.target}}

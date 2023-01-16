@@ -23,5 +23,5 @@ runs:
   using: "composite"
   steps:
     - run: |
-        docker build -t ${{ inputs.image }} -f ${{ inputs.file }} --target ${{ inputs.target }} ${{ inputs.context }}
+        docker build -t ${{ inputs.image }}:${{ inputs.tags }} -f ${{ inputs.file }} --target ${{ inputs.target }} ${{ inputs.context }}
       shell: bash
