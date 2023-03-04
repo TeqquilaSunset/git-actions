@@ -1,0 +1,5 @@
+.github
+CHANGELOG.md
+Dockerfile
+README.md
+.pre-commit-config.yaml

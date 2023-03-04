@@ -1,5 +1,5 @@
 name: CI with matrix
-on: 
+on:
   push:
   workflow_dispatch:
     inputs:
@@ -8,11 +8,12 @@ on:
         description: image tag
 
 jobs:
- build:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
+          - name_image: cv-builder
           - name_image: cv-builder
             target: builder
           - name_image: cv-final
@@ -22,6 +23,8 @@ jobs:
       - name: Check out Project
         uses: actions/checkout@v3
 
+      - name: Build all
+        uses: ./.github/actions/
       - name: Build all
         uses: ./.github/actions/
         with:
