@@ -14,6 +14,7 @@ jobs:
       matrix:
         include:
           - name_image: cv-builder
+          - name_image: cv-builder
             target: builder
           - name_image: cv-final
             target: final
@@ -24,9 +25,13 @@ jobs:
 
       - name: Build all
         uses: ./.github/actions/
+      - name: Build all
+        uses: ./.github/actions/
         with:
           context: .
           file: ./Dockerfile
+          image: ${{matrix.name_image}}
+          tags: ${{inputs.tag != '' && inputs.tag || github.ref_name}}
           image: ${{matrix.name_image}}
           tags: ${{inputs.tag != '' && inputs.tag || github.ref_name}}
           target: ${{matrix.target}}

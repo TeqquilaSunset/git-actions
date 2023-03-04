@@ -1,5 +1,4 @@
-jenkins/backups
-.github/.env*.html
+*.html
 *.json
 *.pdf
 build
